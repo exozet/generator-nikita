@@ -11,18 +11,18 @@ var NikitaGenerator = yeoman.generators.Base.extend({
 	{
 		this.pkg = require('../package.json');
 	},
-	
+
 	prompting: function ()
 	{
 		var that = this;
-		
+
 		var done = this.async();
-		
+
 		// Have Yeoman greet the user.
 		this.log(yosay(
 			'Welcome to the Nikita Project Generator!'
 		));
-		
+
 		var promptInput = function (name, question, defaultValue)
 		{
 			return {
@@ -32,7 +32,7 @@ var NikitaGenerator = yeoman.generators.Base.extend({
 				default: that.config.get(name, defaultValue)
 			};
 		};
-		
+
 		var promptConfirm = function (name, question, defaultValue)
 		{
 			return {
@@ -42,7 +42,7 @@ var NikitaGenerator = yeoman.generators.Base.extend({
 				default: that.config.get(name, defaultValue)
 			};
 		};
-		
+
 		var promptCheckbox = function(name, question, choices, defaultChoices)
 		{
 			return {
@@ -53,7 +53,7 @@ var NikitaGenerator = yeoman.generators.Base.extend({
 				default: that.config.get(name, defaultChoices || choices)
 			};
 		};
-		
+
 		var promptList = function(name, question, choices, defaultChoices)
 		{
 			return {
@@ -83,7 +83,7 @@ var NikitaGenerator = yeoman.generators.Base.extend({
 				}
 			])
 		];
-		
+
 		var handleSetup = function() {
 			that.prompt([
 				promptConfirm('useBuildFolders', 'Do you want to use "build/source and dist" folder?', that.config.get('useBuildFolders', true))
@@ -133,7 +133,7 @@ var NikitaGenerator = yeoman.generators.Base.extend({
 								that.config.set(key, props[key]);
 							}
 						}
-						
+
 						/* remove trailing slash */
 						that.config.set('sourceFolder', (that.config.get('sourceFolder') || "").replace(/\/$/, ""));
 						that.config.set('requirejsPathToBowerComponents', (Array(2 + that.config.get('sourceFolder').split("/", -1).length).join("../")) + 'bower_components/');
@@ -257,7 +257,7 @@ var NikitaGenerator = yeoman.generators.Base.extend({
 						}, {
 							name: 'Take screenshots to diff your changes (grunt-photobox)',
 							value: 'takeScreenshots'
-                        }, {
+						}, {
 							name: "Add a universal css as fallback for old browsers",
 							value: "universalCss"
 						}, {
@@ -325,18 +325,18 @@ var NikitaGenerator = yeoman.generators.Base.extend({
 			}
 		});
 	},
-	
+
 	writing: {
 		app: function ()
 		{
 			var packageJsonData = this.src.readJSON('_package.json');
 			var bowerJsonData = this.src.readJSON('_bower.json');
-			
+
 			packageJsonData['name'] = this.config.get('name');
 			bowerJsonData['name'] = this.config.get('name');
-			
+
 			packageJsonData['private'] = this.config.get('private');
-			
+
 			// Standard Files & Folders
 			this.template('.gitignore.ejs', '.gitignore');
 			this.template('.scss-lint.yml.ejs', '.scss-lint.yml');
@@ -352,14 +352,15 @@ var NikitaGenerator = yeoman.generators.Base.extend({
 			{
 				sourceFolder = this.config.get('sourceFolder');
 			}
-			
+
 			// Basic Project Folders
 			this.dest.mkdir(sourceFolder + '/img');
 			this.dest.mkdir(sourceFolder + '/img/bgs');
 			this.dest.mkdir(sourceFolder + '/img/icons');
 			this.dest.mkdir(sourceFolder + '/sass/mixins');
 			this.directory('source/img/appicons', sourceFolder + '/img/appicons');
-			
+			this.directory('source/components', sourceFolder + '/components');
+
 			// SASS Basic Files
 			this.template('source/sass/styles.scss.ejs', sourceFolder + '/sass/styles.scss');
 
@@ -369,28 +370,28 @@ var NikitaGenerator = yeoman.generators.Base.extend({
 			}
 
 			this.template('source/sass/_basics.scss.ejs', sourceFolder + '/sass/_basics.scss');
-			
+
 			// SASS Extra Files
 			this.template('source/sass/blocks/_rwd-testing.scss.ejs', sourceFolder + '/sass/blocks/_rwd-testing.scss');
 			this.template('source/sass/extends/.gitkeep', sourceFolder + '/sass/extends/.gitkeep');
 			this.template('source/sass/extends/_buttons.scss.ejs', sourceFolder + '/sass/extends/_buttons.scss');
-			
+
 			// SASS Variables
 			this.template('source/sass/variables/_color.scss.ejs', sourceFolder + '/sass/variables/_color.scss');
 			this.template('source/sass/variables/_timing.scss.ejs', sourceFolder + '/sass/variables/_timing.scss');
 			this.template('source/sass/variables/_typography.scss.ejs', sourceFolder + '/sass/variables/_typography.scss');
-			
+
 			// JS Files
 			this.template('source/js/_requireconfig.js.ejs', sourceFolder + '/js/_requireconfig.js');
 			this.template('source/js/app.js.ejs', sourceFolder + '/js/app.js');
 			this.template('source/js/modernizr/cssCheckedTest.js.ejs', sourceFolder + '/js/modernizr/cssCheckedTest.js');
 			this.template('source/js/modernizr/positionStickyTest.js.ejs', sourceFolder + '/js/modernizr/positionStickyTest.js');
-			
+
 			// Assemble Files
 			this.template('source/assemble/pages/index.hbs.ejs', sourceFolder + '/assemble/pages/index.hbs');
 			this.template('source/assemble/pages/rwd-testing.hbs.ejs', sourceFolder + '/assemble/pages/rwd-testing.hbs');
 			this.template('source/assemble/layouts/lyt-default.hbs.ejs', sourceFolder + '/assemble/layouts/lyt-default.hbs');
-			
+
 			// Assemble Folders
 			this.directory('source/assemble/data', sourceFolder + '/assemble/data');
 			this.directory('source/assemble/helpers', sourceFolder + '/assemble/helpers');
@@ -412,26 +413,26 @@ var NikitaGenerator = yeoman.generators.Base.extend({
 			{
 				delete packageJsonData['devDependencies']['grunt-sass'];
 			}
-			
+
 			// Compass
 			if (this.config.get('sassCompiler').indexOf('compass') == -1)
 			{
 				delete packageJsonData['devDependencies']['grunt-contrib-compass'];
 			}
-			
+
 			// Optional Browser Reset SASS-Partial
 			if (this.config.get('features').indexOf('browserReset') != -1)
 			{
 				this.template('source/sass/_reset.scss.ejs', sourceFolder + '/sass/_reset.scss');
 			}
-			
+
 			// Optional Webfonts folder and SASS-Partial
 			if (this.config.get('features').indexOf('webfonts') != -1)
 			{
 				this.directory('source/fonts', sourceFolder + '/fonts');
 				this.template('source/sass/_webfonts.scss.ejs', sourceFolder + '/sass/_webfonts.scss');
 			}
-			
+
 			// Optional SVG Backgrounds
 			if (this.config.get('features').indexOf('svgBackgrounds') != -1)
 			{
@@ -458,7 +459,7 @@ var NikitaGenerator = yeoman.generators.Base.extend({
 			{
 				delete packageJsonData['devDependencies']['grunt-csssplit'];
 			}
-			
+
 			// Optional CSS Styleguide
 			if (this.config.get('features').indexOf('cssStyleGuide') == -1)
 			{
@@ -469,31 +470,31 @@ var NikitaGenerator = yeoman.generators.Base.extend({
 				this.template('source/sass/blocks/styleguide.md.ejs', sourceFolder + '/sass/blocks/styleguide.md');
 				this.directory('source/styleguide-template', sourceFolder + '/styleguide-template');
 			}
-			
+
 			// Optional JS Documentation
 			if (this.config.get('features').indexOf('jsDoc') == -1)
 			{
 				delete packageJsonData['devDependencies']['grunt-jsdoc'];
 			}
-			
+
 			// Optional Pagespeed Measuring
 			if (this.config.get('features').indexOf('measurePagespeed') == -1)
 			{
 				delete packageJsonData['devDependencies']['grunt-pagespeed'];
 			}
-			
+
 			// Optional Performance Measuring
 			if (this.config.get('features').indexOf('measurePerformance') == -1)
 			{
 				delete packageJsonData['devDependencies']['grunt-phantomas'];
 			}
-			
+
 			// Optional Screenshots Diffing
 			if (this.config.get('features').indexOf('takeScreenshots') == -1)
 			{
 				delete packageJsonData['devDependencies']['grunt-photobox'];
 			}
-			
+
 			// Optional Gitinfos
 			if (this.config.get('features').indexOf('gitinfos') == -1)
 			{
@@ -503,45 +504,45 @@ var NikitaGenerator = yeoman.generators.Base.extend({
 			{
 				this.template('source/assemble/partials/gitinfos.hbs.ejs', sourceFolder + '/assemble/partials/gitinfos.hbs');
 			}
-			
+
 			// Optional Layering-Mixin
 			if (this.config.get('nikitaCssMixins').indexOf('layering') != -1)
 			{
 				this.template('source/sass/variables/_z-layers.scss.ejs', sourceFolder + '/sass/variables/_z-layers.scss');
 			}
-			
+
 			// Optional Respond-To-Mixin
 			if (this.config.get('nikitaCssMixins').indexOf('respond-to') != -1)
 			{
 				this.template('source/sass/variables/_breakpoints.scss.ejs', sourceFolder + '/sass/variables/_breakpoints.scss');
 			}
-			
+
 			// Optional Form Framework
 			if (this.config.get('formFramework'))
 			{
-				this.template('source/assemble/pages/forms.hbs.ejs', sourceFolder + '/assemble/pages/forms.hbs');
-				this.template('source/sass/blocks/_forms.scss.ejs', sourceFolder + '/sass/blocks/_forms.scss');
-				this.src.copy('source/img/bgs/form-select-arrow-down.svg', sourceFolder + '/img/bgs/form-select-arrow-down.svg');
+				this.template('source/components/forms/forms.hbs.ejs', sourceFolder + '/components/forms/forms.hbs');
+				this.template('source/components/forms/_forms.scss.ejs', sourceFolder + '/components/forms/_forms.scss');
+				this.src.copy('source/components/forms/img/bgs/form-select-arrow-down.svg', sourceFolder + '/components/forms/img/bgs/form-select-arrow-down.svg');
 			}
-			
+
 			this.dest.write('package.json', JSON.stringify(packageJsonData, null, 4));
 			this.dest.write('bower.json', JSON.stringify(bowerJsonData, null, 4));
 		},
-		
+
 		projectfiles: function ()
 		{
 		}
 	},
-	
+
 	end: function ()
 	{
 		if (this.options['skip-install']) {
 			this.log('\nRun ' +
-			chalk.yellow.bold('npm install & bower install') +
-			' to install your frontend dependencies.\n');
+				chalk.yellow.bold('npm install & bower install') +
+				' to install your frontend dependencies.\n');
 			return;
 		}
-		
+
 		this.installDependencies();
 	}
 });

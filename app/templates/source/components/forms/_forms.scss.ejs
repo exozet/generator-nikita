@@ -365,13 +365,13 @@
 	input:not([type="radio"]):not([type="checkbox"]),
 	select,
 	textarea {
-		border: 1px solid $line-color-02;
+		border: 1px solid $form-border-color;
 		padding: 5px 10px;
 		font-family: $base-font;
 		font-size: 16px; // 16px is a must for iOS not zooming into the form
 		line-height: 18px;
-		color: $text-color-02;
-		background-color: $bg-color-01;
+		color: $form-text-color;
+		background-color: $form-bg-color;
 		transition: border-color linear $form-animation-duration, box-shadow linear $form-animation-duration, background-color linear $form-animation-duration;
 	}
 	
@@ -379,14 +379,14 @@
 	select:focus,
 	textarea:focus {
 		outline: none;
-		border-color: $line-color-03;
-		box-shadow: 0 0 8px rgba($bg-color-06, 0.8);
+		border-color: $form-border-hover-color;
+		box-shadow: 0 0 8px rgba($form-boxshadow-color, 0.8);
 	}
 	
 	input:not([type="radio"]):not([type="checkbox"]):hover,
 	select:hover,
 	textarea:hover {
-		border-color: $line-color-03;
+		border-color: $form-border-hover-color;
 	}
 	
 	input:not([type="radio"]):not([type="checkbox"])[disabled],
@@ -395,27 +395,27 @@
 	select[readonly],
 	textarea[disabled],
 	textarea[readonly] {
-		border-color: rgba($text-color-02, 0.4);
+		border-color: rgba($form-border-color, 0.4);
 		box-shadow: none;
-		color: rgba($text-color-02, 0.4);
+		color: rgba($form-text-color, 0.4);
 	}
 	
 	input::-webkit-input-placeholder,
 	textarea::-webkit-input-placeholder {
 		text-overflow: ellipsis;
-		color: $text-color-03;
+		color: $form-text-color-2;
 	}
 	
 	input::-moz-placeholder,
 	textarea::-moz-placeholder {
 		text-overflow: ellipsis;
-		color: $text-color-03;
+		color: $form-text-color-2;
 	}
 	
 	input:-ms-input-placeholder,
 	textarea:-ms-input-placeholder {
 		text-overflow: ellipsis;
-		color: $text-color-03;
+		color: $form-text-color-2;
 	}
 	
 	select {
@@ -428,8 +428,8 @@
 		
 		option {
 			padding: 0 10px;
-			color: $text-color-02;
-			background-color: $bg-color-01;
+			color: $form-text-color;
+			background-color: $form-bg-color;
 		}
 	}
 	
@@ -488,7 +488,7 @@
 		
 		input[disabled] ~ .label,
 		input[readonly] ~ .label {
-			color: rgba($text-color-02, 0.4);
+			color: rgba($form-text-color, 0.4);
 			cursor: not-allowed;
 			
 			&:before,
@@ -506,7 +506,7 @@
 				left: 0;
 				width: 22px;
 				height: 22px;
-				border: 2px solid $line-color-02;
+				border: 2px solid $form-border-color;
 				border-radius: 50%;
 			}
 			
@@ -516,14 +516,14 @@
 				width: 10px;
 				height: 10px;
 				border-radius: 50%;
-				background-color: $bg-color-01;
+				background-color: $form-bg-color;
 			}
 		}
 		
 		input[disabled]:hover {
 			& ~ .label {
 				&:before {
-					border-color: $line-color-02;
+					border-color: $form-border-color;
 				}
 			}
 		}
@@ -532,7 +532,7 @@
 		input:hover {
 			& ~ .label {
 				&:before {
-					border-color: $line-color-06;
+					border-color: $form-border-active-color;
 				}
 			}
 		}
@@ -541,7 +541,7 @@
 		input[disabled]:checked:hover {
 			& ~ .label {
 				&:after {
-					background-color: $bg-color-06;
+					background-color: $form-bg-active-color;
 				}
 			}
 		}
@@ -554,7 +554,7 @@
 				left: 1px;
 				width: 20px;
 				height: 20px;
-				border: 2px solid $line-color-02;
+				border: 2px solid $form-border-color;
 			}
 			
 			&:after {
@@ -562,14 +562,14 @@
 				left: 7px;
 				width: 8px;
 				height: 8px;
-				background-color: $bg-color-01;
+				background-color: $form-bg-color;
 			}
 		}
 		
 		input[disabled]:hover {
 			& ~ .label {
 				&:before {
-					border-color: $line-color-02;
+					border-color: $form-border-color;
 				}
 			}
 		}
@@ -578,7 +578,7 @@
 		input:hover {
 			& ~ .label {
 				&:before {
-					border-color: $line-color-06;
+					border-color: $form-border-active-color;
 				}
 			}
 		}
@@ -587,7 +587,7 @@
 		input[disabled]:checked:hover {
 			& ~ .label {
 				&:after {
-					background-color: $bg-color-06;
+					background-color: $form-bg-active-color;
 				}
 			}
 		}
@@ -599,7 +599,7 @@
 		padding-top: 8px;
 		font-size: 14px;
 		line-height: 16px;
-		color: $text-color-02;
+		color: $form-text-color;
 	}
 	
 	// Addons
@@ -608,11 +608,11 @@
 		display: block;
 		width: 8%;
 		min-height: 36px;
-		border: 1px solid $line-color-02;
+		border: 1px solid $form-border-color;
 		padding: 6px 0;
 		text-align: center;
-		color: $text-color-02;
-		background-color: $bg-color-04;
+		color: $form-text-color;
+		background-color: $form-bg-light-color;
 		
 		+ input:not([type="radio"]):not([type="checkbox"]) {
 			width: 92%;
@@ -641,4 +641,23 @@
 		@extend %btn-form;
 	}
 	
+}
+
+// Form-Button
+.form-btn {
+	border: 1px solid $form-border-active-color;
+	padding: 5px 20px;
+	font-size: 16px;
+	line-height: 22px;
+	text-transform: uppercase;
+	color: $form-btn-text-color;
+	background-color: $form-bg-active-color;
+	
+	.no-touch &:focus,
+	.no-touch &:hover,
+	.no-touch &:active {
+		border: 1px solid $form-border-color;
+		color: $form-text-color;
+		background-color: $transparent;
+	}
 }
